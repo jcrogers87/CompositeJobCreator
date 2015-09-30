@@ -114,7 +114,11 @@ Module Module1
                 plyFile = Split(csvReader(line), ",")
                 Dim styles As String = ""
                 For plyInt = 0 To plyFile.Count - 1
-                    If Not File.Exists(subRoot & "\" & System.IO.Path.GetFileName(plyFile(plyInt))) Then
+                    If File.Exists(subRoot & "\" & System.IO.Path.GetFileName(plyFile(plyInt))) Then
+                        If Not File.GetLastWriteTime(inputPath & "\" & plyFile(plyInt)) = File.GetLastWriteTime(subRoot & "\" & System.IO.Path.GetFileName(plyFile(plyInt))) Then
+                            File.Copy(inputPath & "\" & plyFile(plyInt), subRoot & "\" & System.IO.Path.GetFileName(plyFile(plyInt)))
+                        End If
+                    Else
                         File.Copy(inputPath & "\" & plyFile(plyInt), subRoot & "\" & System.IO.Path.GetFileName(plyFile(plyInt)))
                     End If
                     styles = System.IO.Path.GetFileNameWithoutExtension(plyFile(plyInt)) & "&" & styles
@@ -151,7 +155,11 @@ Module Module1
                 If finish > kitCounter Then finish = kitCounter
                 Dim styles As String = ""
                 For i = start To finish - 1
-                    If Not File.Exists(subDirectory & "\" & System.IO.Path.GetFileName(kitarray(i))) Then
+                    If File.Exists(subDirectory & "\" & System.IO.Path.GetFileName(kitarray(i))) Then
+                        If Not File.GetLastWriteTime(kitarray(i)) = File.GetLastWriteTime(subDirectory & "\" & System.IO.Path.GetFileName(kitarray(i))) Then
+                            File.Copy(kitarray(i), subDirectory & "\" & System.IO.Path.GetFileName(kitarray(i)))
+                        End If
+                    Else
                         File.Copy(kitarray(i), subDirectory & "\" & System.IO.Path.GetFileName(kitarray(i)))
                     End If
                     styles = System.IO.Path.GetFileNameWithoutExtension(kitarray(i)) & "&" & styles
@@ -198,7 +206,12 @@ Module Module1
                     If finish > kitCounter Then finish = kitCounter
                     Dim styles As String = ""
                     For j = start To finish - 1
-                        If Not File.Exists(subDirectory & "\" & System.IO.Path.GetFileName(kitarray(j))) Then
+                        If File.Exists(subDirectory & "\" & System.IO.Path.GetFileName(kitarray(j))) Then
+                            If Not File.GetLastWriteTime(kitarray(j)) = File.GetLastWriteTime(subDirectory & "\" & System.IO.Path.GetFileName(kitarray(j))) Then
+                                File.Delete(subDirectory & "\" & System.IO.Path.GetFileName(kitarray(j)))
+                                File.Copy(kitarray(j), subDirectory & "\" & System.IO.Path.GetFileName(kitarray(j)))
+                            End If
+                        Else
                             File.Copy(kitarray(j), subDirectory & "\" & System.IO.Path.GetFileName(kitarray(j)))
                         End If
                         styles = System.IO.Path.GetFileNameWithoutExtension(kitarray(j)) & "&" & styles
@@ -217,7 +230,12 @@ Module Module1
                 End If
                 Dim styles As String = ""
                 For j = 0 To kitCounter - 1
-                    If Not File.Exists(newRoot & "\" & System.IO.Path.GetFileName(kitarray(j))) Then
+                    If File.Exists(newRoot & "\" & System.IO.Path.GetFileName(kitarray(j))) Then
+                        If Not File.GetLastWriteTime(kitarray(j)) = File.GetLastWriteTime(newRoot & "\" & System.IO.Path.GetFileName(kitarray(j))) Then
+                            File.Delete(newRoot & "\" & System.IO.Path.GetFileName(kitarray(j)))
+                            File.Copy(kitarray(j), newRoot & "\" & System.IO.Path.GetFileName(kitarray(j)))
+                        End If
+                    Else
                         File.Copy(kitarray(j), newRoot & "\" & System.IO.Path.GetFileName(kitarray(j)))
                     End If
                     styles = System.IO.Path.GetFileNameWithoutExtension(kitarray(j)) & "&" & styles
